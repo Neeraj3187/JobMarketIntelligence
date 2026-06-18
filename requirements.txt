@@ -4,5 +4,6 @@ scikit-learn
 sentence-transformers
 reportlab
 PyPDF2
+pdfplumber
 numpy
 matplotlib
