@@ -1,0 +1,8 @@
+streamlit
+pandas
+scikit-learn
+sentence-transformers
+reportlab
+PyPDF2
+numpy
+matplotlib
