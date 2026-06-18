@@ -1,0 +1,9 @@
+JobTitle,Skills,Location,Company,Salary,Experience
+Python Developer,"Python, SQL, Flask",Delhi,TCS,800000,2
+Data Analyst,"Python, Excel, SQL",Mumbai,Infosys,700000,1
+AI Engineer,"Python, TensorFlow, AWS",Bangalore,Microsoft,1800000,4
+DevOps Engineer,"Docker, Kubernetes, AWS",Pune,Amazon,1600000,3
+Frontend Developer,"HTML, CSS, JavaScript",Delhi,Wipro,650000,1
+Backend Developer,"Python, Django, SQL",Hyderabad,Accenture,1200000,3
+Cloud Engineer,"AWS, Linux, Docker",Bangalore,Google,2000000,5
+Machine Learning Engineer,"Python, TensorFlow, Pandas",Mumbai,Meta,2200000,5
