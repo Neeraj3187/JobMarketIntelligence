@@ -90,6 +90,9 @@ if uploaded_file is not None:
             "Match %",
             f"{jd_score:.2f}%"
         )
+        
+        st.progress(80)
+
         jd_missing_skills = get_jd_missing_skills(
             resume_text,
             job_description
@@ -132,55 +135,105 @@ if uploaded_file is not None:
     ]
 )
 
-    missing_skills = get_missing_skills(
-        resume_text,
-        "python, sql, aws, docker, kubernetes"
-    )
+    missing_skills = jd_missing_skills
 
     score = calculate_resume_score(
         resume_text,
         missing_skills
     )
 
-    st.subheader("Resume Score")
-    st.metric("Score", score)
+    st.subheader("ATS Score")
 
-    feedback = get_resume_feedback(
-        score
+    ats_score = score
+
+    st.metric(
+        "ATS Compatibility",
+        f"{ats_score}/100"
     )
 
-    st.subheader(
-        "Resume Feedback"
-    )
+    if ats_score >= 80:
+        st.success("Excellent ATS Compatibility")
 
-    st.success(
-        feedback
-    )
+    elif ats_score >= 60:
+        st.warning("Good ATS Compatibility")
 
-    st.subheader("Missing Skills")
-    if missing_skills:
-        st.write(missing_skills)
     else:
-        st.success("No Missing Skills Found")
+        st.error("Low ATS Compatibility")
 
-    st.subheader("AI Learning Roadmap")
+    st.subheader("Resume Strengths")
 
-    if missing_skills:
+    strengths = []
 
-        st.write("To improve your resume score, learn:")
+    resume_lower = resume_text.lower()
 
-        for skill in missing_skills:
-            st.write(f"✅ {skill}")
+    for skill in [
+        "python",
+        "sql",
+        "git",
+        "aws",
+        "docker",
+        "machine learning"
+    ]:
+        if skill in resume_lower:
+            strengths.append(skill.upper())
 
-        predicted_score = min(
-            score + (len(missing_skills) * 10),
-            100
+    if strengths:
+
+        for skill in strengths:
+            st.markdown(f"- ✅ **{skill}**")
+
+    else:
+        st.warning(
+            "No major strengths detected"
         )
 
+    st.subheader("Skill Gap Analysis")
+
+    matched_skills = len(strengths)
+    missing_count = len(missing_skills)
+
+    col1, col2 = st.columns(2)
+
+    with col1:
         st.metric(
-            "Predicted Score After Learning",
-            predicted_score
+            "Matched Skills",
+            matched_skills
         )
+
+    with col2:
+        st.metric(
+            "Missing Skills",
+            missing_count
+        )
+    chart_df = pd.DataFrame(
+        {
+            "Count": [
+                matched_skills,
+                missing_count
+            ]
+        },
+        index=[
+            "Matched Skills",
+            "Missing Skills"
+        ]
+    )
+
+    st.bar_chart(chart_df)
+
+    st.subheader("Resume Score")
+
+    if score >= 90:
+        st.success(f"🟢 Resume Score: {score}")
+
+    elif score >= 70:
+        st.warning(f"🟡 Resume Score: {score}")
+
+    else:
+        st.error(f"🔴 Resume Score: {score}")
+    st.subheader("Download Report")
+
+    if st.button("Generate PDF Report"):
+
         generate_report(
             "resume_report.pdf",
             career,
@@ -195,7 +248,7 @@ if uploaded_file is not None:
         ) as pdf_file:
 
             st.download_button(
-                label="📄 Download Resume Report",
+                label="⬇️ Download PDF",
                 data=pdf_file,
                 file_name="resume_report.pdf",
                 mime="application/pdf"

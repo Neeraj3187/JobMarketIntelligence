@@ -122,11 +122,24 @@ score = calculate_resume_score(
 )
 
 st.subheader("Resume Score")
-st.metric("Score", score)
 
-st.subheader("Missing Skills")
+if score >= 90:
+    st.success(f"🟢 Resume Score: {score}")
+
+elif score >= 70:
+    st.warning(f"🟡 Resume Score: {score}")
+
+else:
+    st.error(f"🔴 Resume Score: {score}")
+
+st.subheader("🔴 Missing Skills")
 
 if missing_skills:
-    st.write(missing_skills)
+
+    for skill in missing_skills:
+        st.error(skill.upper())
+
 else:
     st.success("No Missing Skills Found")
+    
+    

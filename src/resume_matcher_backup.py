@@ -138,54 +138,21 @@ def calculate_jd_match(
     job_description
 ):
 
-    valid_skills = {
-        "python",
-        "sql",
-        "aws",
-        "docker",
-        "kubernetes",
-        "linux",
-        "java",
-        "javascript",
-        "react",
-        "node",
-        "machine learning",
-        "data science",
-        "pandas",
-        "numpy",
-        "tensorflow",
-        "pytorch",
-        "git",
-        "github",
-        "azure",
-        "devops",
-        "cybersecurity",
-        "jira",
-        "mongodb",
-        "mysql",
-        "postgresql"
-    }
+    model = SentenceTransformer(
+        "all-MiniLM-L6-v2"
+    )
 
-    resume_text = resume_text.lower()
-    job_description = job_description.lower()
+    embeddings = model.encode(
+        [resume_text, job_description]
+    )
 
-    jd_skills = []
-
-    for skill in valid_skills:
-        if skill in job_description:
-            jd_skills.append(skill)
-
-    if len(jd_skills) == 0:
-        return 0
-
-    matched = 0
-
-    for skill in jd_skills:
-        if skill in resume_text:
-            matched += 1
+    similarity = cosine_similarity(
+        [embeddings[0]],
+        [embeddings[1]]
+    )[0][0]
 
     return round(
-        (matched / len(jd_skills)) * 100,
+        similarity * 100,
         2
     )
 def get_jd_missing_skills(
