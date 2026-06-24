@@ -90,7 +90,7 @@ if uploaded_file is not None:
             "Match %",
             f"{jd_score:.2f}%"
         )
-        
+
         st.progress(80)
 
         jd_missing_skills = get_jd_missing_skills(
@@ -160,6 +160,7 @@ if uploaded_file is not None:
     else:
         st.error("Low ATS Compatibility")
 
+
     st.subheader("Resume Strengths")
 
     strengths = []
@@ -182,10 +183,6 @@ if uploaded_file is not None:
         for skill in strengths:
             st.markdown(f"- ✅ **{skill}**")
 
-    else:
-        st.warning(
-            "No major strengths detected"
-        )
 
     st.subheader("Skill Gap Analysis")
 
@@ -230,16 +227,50 @@ if uploaded_file is not None:
 
     else:
         st.error(f"🔴 Resume Score: {score}")
-    st.subheader("Download Report")
 
+    st.subheader("Resume Feedback")
+
+    feedback = get_resume_feedback(score)
+
+    st.info(feedback)
+
+    st.subheader("Resume Improvement Suggestions")
+
+    if missing_skills:
+
+        for skill in missing_skills:
+            st.warning(
+                f"Add {skill.upper()} to improve ATS score"
+            )
+    st.subheader("Recommended Courses")
+
+    courses = {
+        "aws": "AWS Cloud Practitioner",
+        "docker": "Docker Essentials",
+        "kubernetes": "Kubernetes Fundamentals",
+        "pandas": "Data Analysis with Pandas",
+        "numpy": "NumPy for Data Science",
+        "postgresql": "PostgreSQL Bootcamp",
+        "machine learning": "Machine Learning Specialization"
+    }
+
+    for skill in missing_skills:
+
+        if skill in courses:
+            st.info(
+                f"📚 {skill.upper()} → {courses[skill]}"
+            )
+
+
+    st.subheader("Download Report")
     if st.button("Generate PDF Report"):
 
         generate_report(
             "resume_report.pdf",
-            career,
-            score,
-            missing_skills,
-            top_jobs
+           career,
+           score,
+           missing_skills,
+           top_jobs
         )
 
         with open(
