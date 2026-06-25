@@ -49,6 +49,22 @@ st.subheader("Top Locations")
 locs = get_top_locations().most_common(10)
 loc_df = pd.DataFrame(locs, columns=["Location", "Count"])
 st.bar_chart(loc_df.set_index("Location"))
+st.subheader("📊 Market Insights")
+
+top_skill = skill_df.iloc[0]["Skill"]
+top_location = loc_df.iloc[0]["Location"]
+company_count = df["Company"].nunique()
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.metric("🔥 Top Skill", top_skill)
+
+with col2:
+    st.metric("📍 Top Location", top_location)
+
+with col3:
+    st.metric("🏢 Companies Hiring", company_count)
 
 st.success("Job Market Intelligence System Running")
 st.header("Resume Matcher")

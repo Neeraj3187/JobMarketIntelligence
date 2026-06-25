@@ -13,6 +13,7 @@ def generate_report(
     filename,
     career,
     score,
+    feedback,
     missing_skills,
     top_jobs
 ):
@@ -29,6 +30,12 @@ def generate_report(
         Paragraph(
             "Resume Analysis Report",
             styles["Title"]
+        )
+    )
+    content.append(
+        Paragraph(
+            f"Resume Feedback: {feedback}",
+            styles["Normal"]
         )
     )
 
